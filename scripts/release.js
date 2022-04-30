@@ -81,7 +81,7 @@ async function main() {
   step('\nRunning tests...');
   if (!skipTests && !isDryRun) {
     await run(bin('jest'), ['--clearCache']);
-    await run('pnpm', ['test']);
+    await run('pnpm', ['run', 'test']);
   } else {
     console.log(`(skipped)`);
   }
@@ -93,7 +93,7 @@ async function main() {
   // build all packages with types
   step('\nBuilding all packages...');
   if (!skipBuild && !isDryRun) {
-    await run('pnpm', ['run', 'build', '--', '--release']);
+    await run('pnpm', ['run', 'build']);
     // test generated dts files
     // step('\nVerifying type declarations...');
     // await run('pnpm', ['run', 'test-dts-only']);
@@ -119,10 +119,10 @@ async function main() {
   }
 
   // publish packages
-  step('\nPublishing packages...');
-  for (const pkg of packages) {
-    await publishPackage(pkg, targetVersion, runIfNotDry);
-  }
+  // step('\nPublishing packages...');
+  // for (const pkg of packages) {
+  //   await publishPackage(pkg, targetVersion, runIfNotDry);
+  // }
 
   // push to GitHub
   step('\nPushing to GitHub...');
@@ -150,15 +150,15 @@ function updateVersions(version) {
   // 1. update root package.json
   updatePackage(path.resolve(__dirname, '..'), version);
   // 2. update all packages
-  packages.forEach(p => updatePackage(getPkgRoot(p), version));
+  // packages.forEach(p => updatePackage(getPkgRoot(p), version));
 }
 
 function updatePackage(pkgRoot, version) {
   const pkgPath = path.resolve(pkgRoot, 'package.json');
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
   pkg.version = version;
-  updateDeps(pkg, 'dependencies', version);
-  updateDeps(pkg, 'peerDependencies', version);
+  // updateDeps(pkg, 'dependencies', version);
+  // updateDeps(pkg, 'peerDependencies', version);
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
 }
 

@@ -1,10 +1,11 @@
 {
   "name": "git_workflow",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.5-rc.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "vitest",
     "preview": "vite preview",
     "lint-staged": "lint-staged",
     "release": "node script/release.js",
