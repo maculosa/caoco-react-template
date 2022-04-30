@@ -9,13 +9,14 @@ const execa = require('execa');
 
 const preId =
   args.preid ||
-  (semver.prerelease(currentVersion) && semver.prerelease(currentVersion)[0]);
+  (semver.prerelease(currentVersion) && semver.prerelease(currentVersion)[0]) ||
+  'alpha';
 const isDryRun = args.dry;
 const skipTests = args.skipTests;
 const skipBuild = args.skipBuild;
-const packages = fs
-  .readdirSync(path.resolve(__dirname, '../packages'))
-  .filter(p => !p.endsWith('.ts') && !p.startsWith('.'));
+// const packages = fs
+//   .readdirSync(path.resolve(__dirname, '../packages'))
+//   .filter(p => !p.endsWith('.ts') && !p.startsWith('.'));
 
 const skippedPackages = [];
 
@@ -80,7 +81,7 @@ async function main() {
   step('\nRunning tests...');
   if (!skipTests && !isDryRun) {
     await run(bin('jest'), ['--clearCache']);
-    await run('pnpm', ['test', '--', '--bail']);
+    await run('pnpm', ['test']);
   } else {
     console.log(`(skipped)`);
   }
@@ -94,8 +95,8 @@ async function main() {
   if (!skipBuild && !isDryRun) {
     await run('pnpm', ['run', 'build', '--', '--release']);
     // test generated dts files
-    step('\nVerifying type declarations...');
-    await run('pnpm', ['run', 'test-dts-only']);
+    // step('\nVerifying type declarations...');
+    // await run('pnpm', ['run', 'test-dts-only']);
   } else {
     console.log(`(skipped)`);
   }
