@@ -9,7 +9,8 @@
     "lint-staged": "lint-staged",
     "release": "node script/release.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "preinstall": "node scripts/preinstall.js"
+    "preinstall": "node scripts/preinstall.js",
+    "prepare": "husky install"
   },
   "dependencies": {
     "dayjs": "^1.11.1",
@@ -27,6 +28,7 @@
     "eslint": "^8.14.0",
     "execa": "^6.1.0",
     "fs-extra": "^10.1.0",
+    "husky": "^7.0.4",
     "jest": "^28.0.3",
     "lint-staged": "^12.4.1",
     "minimist": "^1.2.6",
